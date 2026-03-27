@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Dashboard - FinancePro</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Segoe UI',sans-serif;
+}
+
+body{
+    background:linear-gradient(135deg,#0f0c29,#302b63,#24243e);
+    color:white;
+    min-height:100vh;
+}
+
+/* NAVBAR */
+nav{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:20px 50px;
+    background:rgba(0,0,0,0.5);
+    border-bottom:1px solid rgba(167,139,250,0.2);
+}
+
+nav a{
+    color:#c4b5fd;
+    text-decoration:none;
+    margin-left:20px;
+    font-weight:bold;
+}
+
+nav a:hover{
+    color:#f59e0b;
+}
+
+/* CONTAINER */
+.container{
+    padding:40px 80px;
+}
+
+/* SUMMARY CARDS */
+.summary{
+    display:flex;
+    gap:30px;
+    flex-wrap:wrap;
+    margin-bottom:40px;
+}
+
+.card{
+    flex:1;
+    min-width:250px;
+    background:rgba(167,139,250,0.1);
+    backdrop-filter:blur(10px);
+    border:1px solid rgba(167,139,250,0.25);
+    padding:25px;
+    border-radius:20px;
+    text-align:center;
+    box-shadow:0 8px 20px rgba(0,0,0,0.4);
+}
+
+.card h3{
+    margin-bottom:15px;
+    font-size:20px;
+    color:#c4b5fd;
+}
+
+.card p{
+    font-size:28px;
+    font-weight:bold;
+    color:#f59e0b;
+}
+
+/* LIMIT TABLE */
+.limit-section{
+    background:rgba(167,139,250,0.08);
+    padding:25px;
+    border-radius:20px;
+    backdrop-filter:blur(10px);
+    border:1px solid rgba(167,139,250,0.2);
+    box-shadow:0 8px 20px rgba(0,0,0,0.4);
+}
+
+.limit-section h2{
+    margin-bottom:20px;
+    color:#c4b5fd;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+th,td{
+    padding:12px;
+    text-align:center;
+}
+
+th{
+    background:linear-gradient(135deg,#7c3aed,#a78bfa);
+    color:white;
+}
+
+td input{
+    padding:8px;
+    border-radius:8px;
+    border:1px solid rgba(167,139,250,0.3);
+    text-align:center;
+    background:rgba(255,255,255,0.08);
+    color:white;
+}
+
+/* BUTTON */
+button{
+    margin-top:20px;
+    padding:12px 25px;
+    background:linear-gradient(135deg,#a78bfa,#7c3aed);
+    border:none;
+    border-radius:30px;
+    font-weight:bold;
+    cursor:pointer;
+    transition:0.3s;
+    color:white;
+    margin-right:10px;
+}
+
+button:hover{
+    background:linear-gradient(135deg,#f59e0b,#d97706);
+    color:white;
+}
+
+</style>
+</head>
+
+<body>
+
+<nav>
+<h2>💰 FinancePro</h2>
+<div>
+<a href="index.html">Home</a>
+<a href="income.html">Income</a>
+<a href="expenses.html">Expenses</a>
+<a href="transactions.html">Transactions</a>
+<a href="details.html">Details</a>
+</div>
+</nav>
+
+<div class="container">
+
+<h1 style="margin-bottom:30px;">📊 Dashboard Overview</h1>
+
+<!-- SUMMARY SECTION -->
+<div class="summary">
+
+<div class="card">
+<h3>Total Income</h3>
+<p id="totalIncome">₹0</p>
+</div>
+
+<div class="card">
+<h3>Total Expenses</h3>
+<p id="totalExpense">₹0</p>
+</div>
+
+<div class="card">
+<h3>Remaining Balance</h3>
+<p id="balance">₹0</p>
+</div>
+
+</div>
+
+<!-- EXPENSE LIMIT TABLE -->
+<div class="limit-section">
+<h2>📌 Set Expense Limits</h2>
+
+<table>
+<tr>
+<th>Category</th>
+<th>Limit Amount (₹)</th>
+</tr>
+
+<tr>
+<td>Groceries</td>
+<td><input type="number" id="limitGroceries" value="0"></td>
+</tr>
+
+<tr>
+<td>Vehicle Services</td>
+<td><input type="number" id="limitVehicle" value="0"></td>
+</tr>
+
+<tr>
+<td>Home Rent</td>
+<td><input type="number" id="limitRent" value="0"></td>
+</tr>
+
+<tr>
+<td>Entertainment</td>
+<td><input type="number" id="limitEntertainment" value="0"></td>
+</tr>
+
+<tr>
+<td>Other</td>
+<td><input type="number" id="limitOther" value="0"></td>
+</tr>
+
+</table>
+
+<button onclick="saveLimits()">Save Limits</button>
+<button onclick="resetAll()">Reset All</button>
+
+</div>
+
+<!-- PIE CHART SECTION -->
+<div class="limit-section" style="margin-top:40px;">
+<h2>🥧 Category-wise Expense Breakdown</h2>
+<div style="max-width:420px; margin:20px auto 0;">
+<canvas id="expensePieChart"></canvas>
+</div>
+</div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+
+// BUG FIX: Compute income & expense totals from the transactions array
+let transactions = JSON.parse(localStorage.getItem("transactions")) || [];
+
+let income = 0;
+let expense = 0;
+let categorySpent = {
+    "Groceries": 0,
+    "Vehicle Services": 0,
+    "Home Rent": 0,
+    "Entertainment": 0,
+    "Other": 0
+};
+
+transactions.forEach(function(t){
+    if(t.type === "income"){
+        income += t.amount;
+    } else {
+        expense += t.amount;
+        if(categorySpent.hasOwnProperty(t.category)){
+            categorySpent[t.category] += t.amount;
+        } else {
+            categorySpent["Other"] += t.amount;
+        }
+    }
+});
+
+document.getElementById("totalIncome").innerText = "₹" + income;
+document.getElementById("totalExpense").innerText = "₹" + expense;
+document.getElementById("balance").innerText = "₹" + (income - expense);
+
+// Load saved limit values into inputs
+document.getElementById("limitGroceries").value = localStorage.getItem("limitGroceries") || 0;
+document.getElementById("limitVehicle").value = localStorage.getItem("limitVehicle") || 0;
+document.getElementById("limitRent").value = localStorage.getItem("limitRent") || 0;
+document.getElementById("limitEntertainment").value = localStorage.getItem("limitEntertainment") || 0;
+document.getElementById("limitOther").value = localStorage.getItem("limitOther") || 0;
+
+// Save limits
+function saveLimits(){
+    localStorage.setItem("limitGroceries", document.getElementById("limitGroceries").value);
+    localStorage.setItem("limitVehicle", document.getElementById("limitVehicle").value);
+    localStorage.setItem("limitRent", document.getElementById("limitRent").value);
+    localStorage.setItem("limitEntertainment", document.getElementById("limitEntertainment").value);
+    localStorage.setItem("limitOther", document.getElementById("limitOther").value);
+    alert("Limits Saved Successfully!");
+}
+
+// Reset everything
+function resetAll(){
+    localStorage.clear();
+    location.reload();
+}
+
+// PIE CHART: Category-wise expenses with limit in tooltip
+var categories = ["Groceries", "Vehicle Services", "Home Rent", "Entertainment", "Other"];
+var spentData = categories.map(function(c){ return categorySpent[c]; });
+var limitData = {
+    "Groceries":      parseFloat(localStorage.getItem("limitGroceries")) || 0,
+    "Vehicle Services": parseFloat(localStorage.getItem("limitVehicle")) || 0,
+    "Home Rent":      parseFloat(localStorage.getItem("limitRent")) || 0,
+    "Entertainment":  parseFloat(localStorage.getItem("limitEntertainment")) || 0,
+    "Other":          parseFloat(localStorage.getItem("limitOther")) || 0
+};
+
+var ctx = document.getElementById("expensePieChart").getContext("2d");
+new Chart(ctx, {
+    type: "pie",
+    data: {
+        labels: categories,
+        datasets: [{
+            data: spentData,
+            backgroundColor: [
+                "rgba(167,139,250,0.85)",
+                "rgba(245,158,11,0.85)",
+                "rgba(16,185,129,0.85)",
+                "rgba(248,113,113,0.85)",
+                "rgba(96,165,250,0.85)"
+            ],
+            borderColor: "rgba(255,255,255,0.15)",
+            borderWidth: 2
+        }]
+    },
+    options: {
+        plugins: {
+            legend: {
+                labels: { color: "white", font: { size: 13 } }
+            },
+            tooltip: {
+                callbacks: {
+                    label: function(context){
+                        var cat = context.label;
+                        var spent = context.parsed;
+                        var limit = limitData[cat];
+                        if(limit <= 0){
+                            return "  Spent: ₹" + spent + "  |  No limit set";
+                        }
+                        var diff = limit - spent;
+                        if(diff >= 0){
+                            return "  Spent: ₹" + spent + "  |  Remaining: ₹" + diff;
+                        } else {
+                            return "  Spent: ₹" + spent + "  |  Over limit by: ₹" + Math.abs(diff);
+                        }
+                    }
+                }
+            }
+        }
+    }
+});
+
+</script>
+
+</body>
+</html>

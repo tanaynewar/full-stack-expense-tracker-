@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Transactions - FinancePro</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Segoe UI',sans-serif;
+}
+
+body{
+    background:linear-gradient(135deg,#0f0c29,#302b63,#24243e);
+    color:white;
+    min-height:100vh;
+}
+
+nav{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:20px 50px;
+    background:rgba(0,0,0,0.5);
+    border-bottom:1px solid rgba(167,139,250,0.2);
+}
+
+nav a{
+    color:#c4b5fd;
+    text-decoration:none;
+    margin-left:20px;
+    font-weight:bold;
+}
+
+nav a:hover{
+    color:#f59e0b;
+}
+
+.container{
+    padding:40px 80px;
+}
+
+h1{
+    margin-bottom:30px;
+}
+
+/* TABLE STYLE */
+table{
+    width:100%;
+    border-collapse:collapse;
+    background:rgba(167,139,250,0.08);
+    backdrop-filter:blur(10px);
+    border:1px solid rgba(167,139,250,0.2);
+    border-radius:15px;
+    overflow:hidden;
+}
+
+th,td{
+    padding:15px;
+    text-align:center;
+}
+
+th{
+    background:linear-gradient(135deg,#7c3aed,#a78bfa);
+    color:white;
+}
+
+    tr:nth-child(even){
+        background:rgba(167,139,250,0.06);
+    }
+
+.empty-message{
+    margin-top:20px;
+    font-size:18px;
+    color:#c4b5fd;
+}
+
+</style>
+</head>
+
+<body>
+
+<nav>
+<h2>💰 FinancePro</h2>
+<div>
+<a href="index.html">Home</a>
+<a href="dashboard.html">Dashboard</a>
+<a href="income.html">Income</a>
+<a href="expenses.html">Expenses</a>
+<a href="details.html">Details</a>
+</div>
+</nav>
+
+<div class="container">
+
+<h1>📋 Transaction History</h1>
+
+<table id="transactionTable">
+<thead>
+<tr>
+<th>Type</th>
+<th>Category</th>
+<th>Amount (₹)</th>
+<th>Date</th>
+</tr>
+</thead>
+<tbody id="tableBody">
+<!-- Initially empty -->
+</tbody>
+</table>
+
+<p id="emptyMsg" class="empty-message"></p>
+
+</div>
+
+<script>
+
+// Get transactions from localStorage
+let transactions = JSON.parse(localStorage.getItem("transactions")) || [];
+
+// Reference table body
+let tableBody = document.getElementById("tableBody");
+let emptyMsg = document.getElementById("emptyMsg");
+
+// If no transactions → show nothing in table
+if(transactions.length === 0){
+    emptyMsg.innerText = "No transactions yet. Add income or expenses to see records.";
+}
+else{
+    transactions.forEach(t => {
+        let row = `
+            <tr>
+                <td>${t.type}</td>
+                <td>${t.category}</td>
+                <td>₹${t.amount}</td>
+                <td>${t.date}</td>
+            </tr>
+        `;
+        tableBody.innerHTML += row;
+    });
+}
+
+</script>
+
+</body>
+</html>

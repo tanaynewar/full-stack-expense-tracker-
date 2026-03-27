@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Expense Details</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Segoe UI',sans-serif;
+}
+
+body{
+    background:linear-gradient(135deg,#0f0c29,#302b63,#24243e);
+    min-height:100vh;
+    color:white;
+}
+
+/* NAV */
+nav{
+    display:flex;
+    justify-content:space-between;
+    padding:20px 50px;
+    background:rgba(0,0,0,0.5);
+    border-bottom:1px solid rgba(167,139,250,0.2);
+}
+
+nav a{
+    color:#c4b5fd;
+    text-decoration:none;
+    margin-left:20px;
+}
+
+/* HEADER */
+.header{
+    text-align:center;
+    padding:30px;
+}
+
+.header img{
+    width:180px;
+    border-radius:15px;
+    margin-top:15px;
+}
+
+/* SUMMARY SECTION */
+.summary{
+    display:flex;
+    justify-content:center;
+    gap:20px;
+    flex-wrap:wrap;
+    margin:20px;
+}
+
+.card{
+    background:rgba(167,139,250,0.1);
+    backdrop-filter:blur(10px);
+    border:1px solid rgba(167,139,250,0.25);
+    padding:20px;
+    width:220px;
+    border-radius:15px;
+    text-align:center;
+    box-shadow:0 5px 20px rgba(0,0,0,0.4);
+}
+
+.card h3{
+    margin-bottom:10px;
+    color:#c4b5fd;
+}
+
+.amount{
+    font-size:22px;
+    font-weight:bold;
+    color:#f59e0b;
+}
+
+/* CATEGORY BREAKDOWN */
+.category-section{
+    margin:40px;
+}
+
+.category-container{
+    display:flex;
+    flex-wrap:wrap;
+    gap:20px;
+    justify-content:center;
+}
+
+/* TABLE */
+.table-container{
+    margin:40px;
+    background:rgba(167,139,250,0.08);
+    backdrop-filter:blur(10px);
+    border:1px solid rgba(167,139,250,0.2);
+    padding:20px;
+    border-radius:15px;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    color:white;
+}
+
+th,td{
+    padding:12px;
+    text-align:center;
+}
+
+th{
+    background:linear-gradient(135deg,#7c3aed,#a78bfa);
+    color:white;
+    border-radius:10px;
+}
+
+tr:hover{
+    background:rgba(167,139,250,0.1);
+}
+
+.income{color:#10b981;font-weight:bold;}
+.expense{color:#f87171;font-weight:bold;}
+
+</style>
+</head>
+
+<body>
+
+<nav>
+<h2>📊 Expense Details</h2>
+<div>
+<a href="index.html">Home</a>
+<a href="dashboard.html">Dashboard</a>
+<a href="transactions.html">Transactions</a>
+<a href="feedback.html">Feedback</a>
+</div>
+</nav>
+
+<div class="header">
+<h1>Financial Overview</h1>
+<p>Complete breakdown of your income & expenses</p>
+<img src="https://images.unsplash.com/photo-1554224155-8d04cb21cd6c">
+</div>
+
+<!-- SUMMARY CARDS -->
+<div class="summary">
+<div class="card">
+<h3>Total Income</h3>
+<p id="totalIncome" class="amount">₹ 0</p>
+</div>
+
+<div class="card">
+<h3>Total Expense</h3>
+<p id="totalExpense" class="amount">₹ 0</p>
+</div>
+
+<div class="card">
+<h3>Balance</h3>
+<p id="balance" class="amount">₹ 0</p>
+</div>
+</div>
+
+<!-- CATEGORY BREAKDOWN -->
+<div class="category-section">
+<h2 style="text-align:center;margin-bottom:20px;">Category Breakdown</h2>
+<div class="category-container" id="categoryContainer">
+<!-- Categories will be inserted here -->
+</div>
+</div>
+
+<!-- DETAILED TABLE -->
+<div class="table-container">
+<h2 style="text-align:center;margin-bottom:20px;">Detailed Transactions</h2>
+
+<table id="detailsTable">
+<tr>
+<th>Amount</th>
+<th>Type</th>
+<th>Category</th>
+<th>Date</th>
+<th>Description</th>
+</tr>
+</table>
+
+</div>
+
+<script>
+
+let transactions = JSON.parse(localStorage.getItem("transactions")) || [];
+
+let totalIncome = 0;
+let totalExpense = 0;
+let categoryTotals = {};
+
+let table = document.getElementById("detailsTable");
+let categoryContainer = document.getElementById("categoryContainer");
+
+transactions.forEach(t => {
+
+    // Add to table
+    let row = table.insertRow();
+    row.innerHTML = `
+        <td class="${t.type}">₹ ${t.amount}</td>
+        <td>${t.type}</td>
+        <td>${t.category}</td>
+        <td>${t.date}</td>
+        <td>${t.description}</td>
+    `;
+
+    // Calculate totals
+    if(t.type === "income"){
+        totalIncome += t.amount;
+    } else {
+        totalExpense += t.amount;
+
+        if(!categoryTotals[t.category]){
+            categoryTotals[t.category] = 0;
+        }
+        categoryTotals[t.category] += t.amount;
+    }
+});
+
+// Update summary
+document.getElementById("totalIncome").innerText = "₹ " + totalIncome;
+document.getElementById("totalExpense").innerText = "₹ " + totalExpense;
+document.getElementById("balance").innerText = "₹ " + (totalIncome - totalExpense);
+
+// Create category cards
+for(let category in categoryTotals){
+    let card = document.createElement("div");
+    card.classList.add("card");
+
+    card.innerHTML = `
+        <h3>${category}</h3>
+        <p class="amount">₹ ${categoryTotals[category]}</p>
+    `;
+
+    categoryContainer.appendChild(card);
+}
+
+</script>
+
+</body>
+</html>

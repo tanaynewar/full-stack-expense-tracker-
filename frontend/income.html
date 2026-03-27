@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Income</title>
+<style>
+
+body{
+background:linear-gradient(135deg,#0f0c29,#302b63,#24243e);
+color:white;
+font-family:'Segoe UI';
+}
+
+nav{
+display:flex;
+justify-content:space-between;
+padding:20px 50px;
+background:rgba(0,0,0,0.5);
+border-bottom:1px solid rgba(167,139,250,0.2);
+}
+
+nav a{
+color:#c4b5fd;
+text-decoration:none;
+margin-left:20px;
+}
+
+.container{
+margin:40px;
+background:rgba(167,139,250,0.08);
+padding:30px;
+border-radius:15px;
+backdrop-filter:blur(10px);
+border:1px solid rgba(167,139,250,0.2);
+}
+
+input{
+width:100%;
+padding:10px;
+margin:10px 0;
+background:rgba(255,255,255,0.08);
+border:1px solid rgba(167,139,250,0.3);
+border-radius:8px;
+color:white;
+}
+
+button{
+width:100%;
+padding:10px;
+background:linear-gradient(135deg,#10b981,#059669);
+border:none;
+color:white;
+border-radius:10px;
+cursor:pointer;
+font-weight:bold;
+transition:0.3s;
+}
+
+button:hover{
+background:linear-gradient(135deg,#f59e0b,#d97706);
+}
+
+table{
+width:100%;
+margin-top:20px;
+border-collapse:collapse;
+}
+
+th,td{
+padding:10px;
+text-align:center;
+}
+
+th{
+background:linear-gradient(135deg,#059669,#10b981);
+color:white;
+}
+
+.income{
+color:#10b981;
+font-weight:bold;
+}
+
+</style>
+</head>
+<body>
+
+<nav>
+<h2>💰 Income</h2>
+<div>
+<a href="index.html">Home</a>
+<a href="dashboard.html">Dashboard</a>
+<a href="expenses.html">Expenses</a>
+</div>
+</nav>
+
+<div class="container">
+
+<h2>Total Income: ₹ <span id="totalIncome">0</span></h2>
+
+<h3>Add Income</h3>
+<input type="number" id="amount" placeholder="Amount">
+<select id="category" style="width:100%;padding:10px;margin:10px 0;border-radius:8px;border:1px solid rgba(167,139,250,0.3);font-family:'Segoe UI',sans-serif;font-size:14px;background:rgba(255,255,255,0.08);color:white;">   
+<option value="">-- Select Category --</option>
+<option value="Salary">Salary</option>
+<option value="Scholarship">Scholarship</option>
+<option value="Freelance">Freelance</option>
+<option value="Business">Business</option>
+<option value="Investment">Investment</option>
+<option value="Gift">Gift</option>
+<option value="Other">Other</option>
+</select>
+<input type="date" id="date">
+<input type="text" id="description" placeholder="Description">
+<button onclick="addIncome()">Add Income</button>
+
+<table id="incomeTable">
+<tr>
+<th>Amount</th>
+<th>Category</th>
+<th>Date</th>
+<th>Description</th>
+</tr>
+</table>
+
+</div>
+
+<script>
+
+let transactions = JSON.parse(localStorage.getItem("transactions")) || [];
+let table = document.getElementById("incomeTable");
+
+function addIncome(){
+let amount = parseFloat(document.getElementById("amount").value);
+let category = document.getElementById("category").value;
+let date = document.getElementById("date").value;
+let description = document.getElementById("description").value;
+
+let transaction = {
+amount,
+type:"income",
+category,
+date,
+description
+};
+
+transactions.push(transaction);
+localStorage.setItem("transactions", JSON.stringify(transactions));
+location.reload();
+}
+
+let totalIncome = 0;
+
+transactions.forEach(t=>{
+if(t.type==="income"){
+totalIncome += t.amount;
+
+let row = table.insertRow();
+row.innerHTML = `
+<td class="income">₹ ${t.amount}</td>
+<td>${t.category}</td>
+<td>${t.date}</td>
+<td>${t.description}</td>
+`;
+}
+});
+
+document.getElementById("totalIncome").innerText = totalIncome;
+
+</script>
+
+</body>
+</html>

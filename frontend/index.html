@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Finance Tracker - Home</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Segoe UI',sans-serif;
+}
+
+body{
+    background:linear-gradient(135deg,#0f0c29,#302b63,#24243e);
+    color:white;
+    min-height:100vh;
+}
+
+/* NAVBAR */
+nav{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:20px 50px;
+    background:rgba(0,0,0,0.5);
+    border-bottom:1px solid rgba(167,139,250,0.2);
+}
+
+nav h2{
+    font-size:22px;
+}
+
+nav a{
+    color:#c4b5fd;
+    text-decoration:none;
+    margin-left:20px;
+    font-weight:bold;
+    transition:0.3s;
+}
+
+nav a:hover{
+    color:#f59e0b;
+}
+
+/* HERO SECTION */
+.hero{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:60px 80px;
+    flex-wrap:wrap;
+}
+
+.hero-text{
+    max-width:500px;
+    animation:fadeIn 1.2s ease;
+}
+
+.hero-text h1{
+    font-size:45px;
+    margin-bottom:20px;
+}
+
+.hero-text p{
+    font-size:18px;
+    margin-bottom:25px;
+    line-height:1.6;
+}
+
+.hero-text button{
+    padding:15px 30px;
+    background:linear-gradient(135deg,#a78bfa,#7c3aed);
+    border:none;
+    border-radius:30px;
+    font-size:16px;
+    font-weight:bold;
+    cursor:pointer;
+    transition:0.3s;
+    color:white;
+}
+
+.hero-text button:hover{
+    background:linear-gradient(135deg,#f59e0b,#d97706);
+    color:white;
+    transform:scale(1.05);
+}
+
+.hero img{
+    width:350px;
+    border-radius:20px;
+    box-shadow:0 10px 30px rgba(0,0,0,0.4);
+}
+
+/* FEATURES SECTION */
+.features{
+    display:flex;
+    justify-content:center;
+    gap:30px;
+    flex-wrap:wrap;
+    padding:50px;
+}
+
+.feature-card{
+    width:260px;
+    background:rgba(167,139,250,0.1);
+    backdrop-filter:blur(10px);
+    border:1px solid rgba(167,139,250,0.2);
+    padding:25px;
+    border-radius:20px;
+    text-align:center;
+    transition:0.3s;
+    box-shadow:0 8px 20px rgba(0,0,0,0.4);
+}
+
+.feature-card:hover{
+    transform:translateY(-10px);
+    border-color:rgba(245,158,11,0.5);
+    box-shadow:0 12px 30px rgba(167,139,250,0.2);
+}
+
+.feature-card h3{
+    margin-bottom:15px;
+}
+
+.feature-card p{
+    font-size:14px;
+    margin-bottom:15px;
+    color:#c4b5fd;
+}
+
+.feature-card a{
+    text-decoration:none;
+    color:#f59e0b;
+    font-weight:bold;
+}
+
+/* FOOTER */
+footer{
+    text-align:center;
+    padding:20px;
+    background:rgba(0,0,0,0.5);
+    border-top:1px solid rgba(167,139,250,0.2);
+    margin-top:40px;
+    color:#c4b5fd;
+}
+
+/* ANIMATION */
+@keyframes fadeIn{
+    from{opacity:0; transform:translateY(-20px);}
+    to{opacity:1; transform:translateY(0);}
+}
+
+@media(max-width:900px){
+    .hero{
+        flex-direction:column;
+        text-align:center;
+    }
+
+    .hero img{
+        margin-top:30px;
+    }
+}
+
+</style>
+</head>
+
+<body>
+
+<nav>
+<h2>💰 FinancePro</h2>
+<div>
+<a href="index.html">Home</a>
+<a href="dashboard.html">Dashboard</a>
+<a href="income.html">Income</a>
+<a href="expenses.html">Expenses</a>
+<a href="transactions.html">Transactions</a>
+<a href="details.html">Details</a>
+<a href="feedback.html">Feedback</a>
+</div>
+</nav>
+
+<!-- HERO SECTION -->
+<section class="hero">
+
+<div class="hero-text">
+<h1>Smart Personal Finance Tracker</h1>
+<p>
+Manage your income and expenses efficiently.  
+Track spending, analyze categories, and stay within budget — all in one place.
+</p>
+
+<a href="dashboard.html">
+<button>Start Managing</button>
+</a>
+</div>
+
+<img src="https://images.unsplash.com/photo-1554224155-8d04cb21cd6c">
+
+</section>
+
+<!-- FEATURES -->
+<section class="features">
+
+<div class="feature-card">
+<h3>💰 Income Management</h3>
+<p>Add and monitor all your earnings with detailed records.</p>
+<a href="income.html">Go to Income →</a>
+</div>
+
+<div class="feature-card">
+<h3>💸 Expense Tracking</h3>
+<p>Track groceries, rent, vehicle, entertainment and more.</p>
+<a href="expenses.html">Go to Expenses →</a>
+</div>
+
+<div class="feature-card">
+<h3>📊 Analytics & Details</h3>
+<p>View category breakdown and complete transaction history.</p>
+<a href="details.html">View Details →</a>
+</div>
+
+</section>
+
+<footer>
+© 2026 FinancePro | Student Budget Tracker System
+</footer>
+
+</body>
+</html>
