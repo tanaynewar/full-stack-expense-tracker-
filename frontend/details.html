@@ -1,245 +1,142 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Expense Details</title>
-
+<title>Details - FinancePro</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Syne:wght@700;800&display=swap" rel="stylesheet">
 <style>
-
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    font-family:'Segoe UI',sans-serif;
-}
-
-body{
-    background:linear-gradient(135deg,#0f0c29,#302b63,#24243e);
-    min-height:100vh;
-    color:white;
-}
-
-/* NAV */
-nav{
-    display:flex;
-    justify-content:space-between;
-    padding:20px 50px;
-    background:rgba(0,0,0,0.5);
-    border-bottom:1px solid rgba(167,139,250,0.2);
-}
-
-nav a{
-    color:#c4b5fd;
-    text-decoration:none;
-    margin-left:20px;
-}
-
-/* HEADER */
-.header{
-    text-align:center;
-    padding:30px;
-}
-
-.header img{
-    width:180px;
-    border-radius:15px;
-    margin-top:15px;
-}
-
-/* SUMMARY SECTION */
-.summary{
-    display:flex;
-    justify-content:center;
-    gap:20px;
-    flex-wrap:wrap;
-    margin:20px;
-}
-
-.card{
-    background:rgba(167,139,250,0.1);
-    backdrop-filter:blur(10px);
-    border:1px solid rgba(167,139,250,0.25);
-    padding:20px;
-    width:220px;
-    border-radius:15px;
-    text-align:center;
-    box-shadow:0 5px 20px rgba(0,0,0,0.4);
-}
-
-.card h3{
-    margin-bottom:10px;
-    color:#c4b5fd;
-}
-
-.amount{
-    font-size:22px;
-    font-weight:bold;
-    color:#f59e0b;
-}
-
-/* CATEGORY BREAKDOWN */
-.category-section{
-    margin:40px;
-}
-
-.category-container{
-    display:flex;
-    flex-wrap:wrap;
-    gap:20px;
-    justify-content:center;
-}
-
-/* TABLE */
-.table-container{
-    margin:40px;
-    background:rgba(167,139,250,0.08);
-    backdrop-filter:blur(10px);
-    border:1px solid rgba(167,139,250,0.2);
-    padding:20px;
-    border-radius:15px;
-}
-
-table{
-    width:100%;
-    border-collapse:collapse;
-    color:white;
-}
-
-th,td{
-    padding:12px;
-    text-align:center;
-}
-
-th{
-    background:linear-gradient(135deg,#7c3aed,#a78bfa);
-    color:white;
-    border-radius:10px;
-}
-
-tr:hover{
-    background:rgba(167,139,250,0.1);
-}
-
-.income{color:#10b981;font-weight:bold;}
-.expense{color:#f87171;font-weight:bold;}
-
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Space Grotesk',sans-serif;}
+:root{--bg:#0a0a0f;--card:rgba(255,255,255,0.04);--border:rgba(255,255,255,0.1);--purple:#a78bfa;--gold:#f59e0b;--green:#10b981;--red:#f87171;--text:#e2e8f0;--muted:#94a3b8;}
+body{background:var(--bg);color:var(--text);min-height:100vh;background-image:radial-gradient(ellipse 80% 60% at 50% -20%,rgba(245,158,11,0.08) 0%,transparent 60%);}
+nav{display:flex;justify-content:space-between;align-items:center;padding:18px 60px;background:rgba(0,0,0,0.6);border-bottom:1px solid var(--border);backdrop-filter:blur(12px);}
+.nav-logo{font-family:'Syne',sans-serif;font-size:22px;font-weight:800;}
+.nav-logo span{color:var(--purple);}
+.nav-links{display:flex;align-items:center;gap:4px;}
+.nav-links a{color:var(--muted);text-decoration:none;padding:6px 10px;font-size:14px;font-weight:500;transition:0.2s;border-radius:8px;}
+.nav-links a:hover{color:var(--text);background:rgba(255,255,255,0.05);}
+#navUser{color:var(--purple);font-size:13px;padding:0 8px;}
+.btn-logout{background:none;border:1px solid var(--border);border-radius:8px;color:var(--muted);padding:6px 14px;cursor:pointer;font-size:13px;font-family:'Space Grotesk',sans-serif;transition:0.2s;}
+.btn-logout:hover{border-color:var(--red);color:var(--red);}
+.container{max-width:1000px;margin:0 auto;padding:40px 30px;}
+.page-title{font-family:'Syne',sans-serif;font-size:28px;font-weight:800;margin-bottom:28px;letter-spacing:-1px;}
+.summary{display:flex;gap:20px;flex-wrap:wrap;margin-bottom:32px;}
+.card{flex:1;min-width:180px;background:var(--card);border:1px solid var(--border);padding:22px;border-radius:16px;text-align:center;}
+.card h3{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;font-weight:600;}
+.card .amount{font-family:'Syne',sans-serif;font-size:26px;font-weight:800;letter-spacing:-1px;}
+.section{background:var(--card);border:1px solid var(--border);border-radius:16px;margin-bottom:28px;overflow:hidden;}
+.section-header{padding:20px 24px;border-bottom:1px solid var(--border);}
+.section-header h2{font-size:17px;font-weight:700;color:var(--purple);}
+.category-grid{display:flex;flex-wrap:wrap;gap:14px;padding:20px 24px;}
+.cat-card{background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:12px;padding:16px 20px;min-width:160px;text-align:center;}
+.cat-card h4{font-size:13px;color:var(--muted);margin-bottom:6px;font-weight:600;}
+.cat-card .cat-amount{font-family:'Syne',sans-serif;font-size:20px;font-weight:800;}
+.cat-card .cat-count{font-size:11px;color:var(--muted);margin-top:4px;}
+.cat-income .cat-amount{color:var(--green);}
+.cat-expense .cat-amount{color:var(--red);}
+table{width:100%;border-collapse:collapse;}
+th,td{padding:13px 16px;text-align:center;font-size:14px;}
+th{background:rgba(124,58,237,0.2);color:var(--purple);font-size:12px;text-transform:uppercase;letter-spacing:0.8px;font-weight:700;}
+tr:nth-child(even){background:rgba(255,255,255,0.02);}
+tr:hover{background:rgba(167,139,250,0.04);}
+.badge{display:inline-block;padding:3px 10px;border-radius:20px;font-size:12px;font-weight:700;}
+.badge-income{background:rgba(16,185,129,0.15);color:var(--green);}
+.badge-expense{background:rgba(248,113,113,0.15);color:var(--red);}
+.amount-income{color:var(--green);font-weight:700;}
+.amount-expense{color:var(--red);font-weight:700;}
+.empty{padding:40px;text-align:center;color:var(--muted);}
 </style>
 </head>
-
 <body>
-
 <nav>
-<h2>📊 Expense Details</h2>
-<div>
-<a href="index.html">Home</a>
-<a href="dashboard.html">Dashboard</a>
-<a href="transactions.html">Transactions</a>
-<a href="feedback.html">Feedback</a>
-</div>
+  <div class="nav-logo">💰 Finance<span>Pro</span></div>
+  <div class="nav-links">
+    <a href="index.html">Home</a>
+    <a href="dashboard.html">Dashboard</a>
+    <a href="transactions.html">Transactions</a>
+    <a href="feedback.html">Feedback</a>
+    <span id="navUser"></span>
+    <button class="btn-logout" onclick="logout()">Logout</button>
+  </div>
 </nav>
 
-<div class="header">
-<h1>Financial Overview</h1>
-<p>Complete breakdown of your income & expenses</p>
-<img src="https://images.unsplash.com/photo-1554224155-8d04cb21cd6c">
+<div class="container">
+  <div class="page-title">📈 Financial Overview</div>
+
+  <div class="summary">
+    <div class="card"><h3>Total Income</h3><div class="amount" id="totalIncome" style="color:var(--green)">—</div></div>
+    <div class="card"><h3>Total Expenses</h3><div class="amount" id="totalExpense" style="color:var(--red)">—</div></div>
+    <div class="card"><h3>Balance</h3><div class="amount" id="balance" style="color:var(--gold)">—</div></div>
+  </div>
+
+  <div class="section">
+    <div class="section-header"><h2>🏷️ Category Breakdown</h2></div>
+    <div class="category-grid" id="categoryGrid"><div class="empty" style="width:100%">Loading...</div></div>
+  </div>
+
+  <div class="section">
+    <div class="section-header"><h2>📋 All Transactions</h2></div>
+    <div id="tableWrap"><div class="empty">Loading...</div></div>
+  </div>
 </div>
 
-<!-- SUMMARY CARDS -->
-<div class="summary">
-<div class="card">
-<h3>Total Income</h3>
-<p id="totalIncome" class="amount">₹ 0</p>
-</div>
-
-<div class="card">
-<h3>Total Expense</h3>
-<p id="totalExpense" class="amount">₹ 0</p>
-</div>
-
-<div class="card">
-<h3>Balance</h3>
-<p id="balance" class="amount">₹ 0</p>
-</div>
-</div>
-
-<!-- CATEGORY BREAKDOWN -->
-<div class="category-section">
-<h2 style="text-align:center;margin-bottom:20px;">Category Breakdown</h2>
-<div class="category-container" id="categoryContainer">
-<!-- Categories will be inserted here -->
-</div>
-</div>
-
-<!-- DETAILED TABLE -->
-<div class="table-container">
-<h2 style="text-align:center;margin-bottom:20px;">Detailed Transactions</h2>
-
-<table id="detailsTable">
-<tr>
-<th>Amount</th>
-<th>Type</th>
-<th>Category</th>
-<th>Date</th>
-<th>Description</th>
-</tr>
-</table>
-
-</div>
-
+<script src="api.js"></script>
 <script>
+requireAuth();
 
-let transactions = JSON.parse(localStorage.getItem("transactions")) || [];
+async function loadDetails(){
+  try{
+    const [txnRes, summaryRes] = await Promise.all([
+      apiFetch('/transactions'),
+      apiFetch('/transactions/summary')
+    ]);
+    if(!txnRes || !summaryRes) return;
 
-let totalIncome = 0;
-let totalExpense = 0;
-let categoryTotals = {};
+    const txnData = await txnRes.json();
+    const sumData = await summaryRes.json();
 
-let table = document.getElementById("detailsTable");
-let categoryContainer = document.getElementById("categoryContainer");
-
-transactions.forEach(t => {
-
-    // Add to table
-    let row = table.insertRow();
-    row.innerHTML = `
-        <td class="${t.type}">₹ ${t.amount}</td>
-        <td>${t.type}</td>
-        <td>${t.category}</td>
-        <td>${t.date}</td>
-        <td>${t.description}</td>
-    `;
-
-    // Calculate totals
-    if(t.type === "income"){
-        totalIncome += t.amount;
-    } else {
-        totalExpense += t.amount;
-
-        if(!categoryTotals[t.category]){
-            categoryTotals[t.category] = 0;
-        }
-        categoryTotals[t.category] += t.amount;
+    if(txnRes.ok){
+      renderTransactions(txnData.data);
     }
-});
-
-// Update summary
-document.getElementById("totalIncome").innerText = "₹ " + totalIncome;
-document.getElementById("totalExpense").innerText = "₹ " + totalExpense;
-document.getElementById("balance").innerText = "₹ " + (totalIncome - totalExpense);
-
-// Create category cards
-for(let category in categoryTotals){
-    let card = document.createElement("div");
-    card.classList.add("card");
-
-    card.innerHTML = `
-        <h3>${category}</h3>
-        <p class="amount">₹ ${categoryTotals[category]}</p>
-    `;
-
-    categoryContainer.appendChild(card);
+    if(summaryRes.ok){
+      const {totalIncome,totalExpense,balance,byCategory} = sumData.data;
+      document.getElementById('totalIncome').textContent = '₹'+totalIncome.toLocaleString('en-IN',{minimumFractionDigits:2,maximumFractionDigits:2});
+      document.getElementById('totalExpense').textContent = '₹'+totalExpense.toLocaleString('en-IN',{minimumFractionDigits:2,maximumFractionDigits:2});
+      document.getElementById('balance').textContent = '₹'+balance.toLocaleString('en-IN',{minimumFractionDigits:2,maximumFractionDigits:2});
+      renderCategories(byCategory);
+    }
+  } catch(e){ console.error(e); }
 }
 
-</script>
+function renderCategories(cats){
+  if(!cats||cats.length===0){
+    document.getElementById('categoryGrid').innerHTML='<div class="empty" style="width:100%">No data yet.</div>';
+    return;
+  }
+  document.getElementById('categoryGrid').innerHTML = cats.map(c=>`
+    <div class="cat-card cat-${c.type}">
+      <h4>${c.category}</h4>
+      <div class="cat-amount">₹${parseFloat(c.total).toLocaleString('en-IN',{minimumFractionDigits:2})}</div>
+      <div class="cat-count">${c.type} · ${c.count} txn${c.count!='1'?'s':''}</div>
+    </div>`).join('');
+}
 
+function renderTransactions(txns){
+  if(!txns||txns.length===0){
+    document.getElementById('tableWrap').innerHTML='<div class="empty">No transactions yet.</div>';
+    return;
+  }
+  const rows = txns.map(t=>`
+    <tr>
+      <td class="amount-${t.type}">₹ ${parseFloat(t.amount).toLocaleString('en-IN',{minimumFractionDigits:2})}</td>
+      <td><span class="badge badge-${t.type}">${t.type}</span></td>
+      <td>${t.category}</td>
+      <td>${t.txn_date?t.txn_date.substring(0,10):''}</td>
+      <td>${t.description||'—'}</td>
+    </tr>`).join('');
+  document.getElementById('tableWrap').innerHTML=`
+    <table><thead><tr><th>Amount</th><th>Type</th><th>Category</th><th>Date</th><th>Description</th></tr></thead><tbody>${rows}</tbody></table>`;
+}
+
+loadDetails();
+</script>
 </body>
 </html>

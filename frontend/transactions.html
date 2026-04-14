@@ -2,147 +2,132 @@
 <html>
 <head>
 <title>Transactions - FinancePro</title>
-
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Syne:wght@700;800&display=swap" rel="stylesheet">
 <style>
-
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    font-family:'Segoe UI',sans-serif;
-}
-
-body{
-    background:linear-gradient(135deg,#0f0c29,#302b63,#24243e);
-    color:white;
-    min-height:100vh;
-}
-
-nav{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    padding:20px 50px;
-    background:rgba(0,0,0,0.5);
-    border-bottom:1px solid rgba(167,139,250,0.2);
-}
-
-nav a{
-    color:#c4b5fd;
-    text-decoration:none;
-    margin-left:20px;
-    font-weight:bold;
-}
-
-nav a:hover{
-    color:#f59e0b;
-}
-
-.container{
-    padding:40px 80px;
-}
-
-h1{
-    margin-bottom:30px;
-}
-
-/* TABLE STYLE */
-table{
-    width:100%;
-    border-collapse:collapse;
-    background:rgba(167,139,250,0.08);
-    backdrop-filter:blur(10px);
-    border:1px solid rgba(167,139,250,0.2);
-    border-radius:15px;
-    overflow:hidden;
-}
-
-th,td{
-    padding:15px;
-    text-align:center;
-}
-
-th{
-    background:linear-gradient(135deg,#7c3aed,#a78bfa);
-    color:white;
-}
-
-    tr:nth-child(even){
-        background:rgba(167,139,250,0.06);
-    }
-
-.empty-message{
-    margin-top:20px;
-    font-size:18px;
-    color:#c4b5fd;
-}
-
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Space Grotesk',sans-serif;}
+:root{--bg:#0a0a0f;--card:rgba(255,255,255,0.04);--border:rgba(255,255,255,0.1);--purple:#a78bfa;--gold:#f59e0b;--green:#10b981;--red:#f87171;--text:#e2e8f0;--muted:#94a3b8;}
+body{background:var(--bg);color:var(--text);min-height:100vh;background-image:radial-gradient(ellipse 80% 60% at 50% -20%,rgba(124,58,237,0.1) 0%,transparent 60%);}
+nav{display:flex;justify-content:space-between;align-items:center;padding:18px 60px;background:rgba(0,0,0,0.6);border-bottom:1px solid var(--border);backdrop-filter:blur(12px);}
+.nav-logo{font-family:'Syne',sans-serif;font-size:22px;font-weight:800;}
+.nav-logo span{color:var(--purple);}
+.nav-links{display:flex;align-items:center;gap:4px;}
+.nav-links a{color:var(--muted);text-decoration:none;padding:6px 10px;font-size:14px;font-weight:500;transition:0.2s;border-radius:8px;}
+.nav-links a:hover{color:var(--text);background:rgba(255,255,255,0.05);}
+#navUser{color:var(--purple);font-size:13px;padding:0 8px;}
+.btn-logout{background:none;border:1px solid var(--border);border-radius:8px;color:var(--muted);padding:6px 14px;cursor:pointer;font-size:13px;font-family:'Space Grotesk',sans-serif;transition:0.2s;}
+.btn-logout:hover{border-color:var(--red);color:var(--red);}
+.container{max-width:1000px;margin:0 auto;padding:40px 30px;}
+.page-title{font-family:'Syne',sans-serif;font-size:28px;font-weight:800;margin-bottom:28px;letter-spacing:-1px;}
+.filter-bar{display:flex;gap:12px;margin-bottom:24px;flex-wrap:wrap;}
+.filter-btn{padding:8px 18px;border:1px solid var(--border);border-radius:20px;background:none;color:var(--muted);font-size:13px;font-weight:600;cursor:pointer;font-family:'Space Grotesk',sans-serif;transition:0.2s;}
+.filter-btn:hover,.filter-btn.active{background:rgba(167,139,250,0.15);border-color:var(--purple);color:var(--purple);}
+.filter-btn.income-active{background:rgba(16,185,129,0.15);border-color:var(--green);color:var(--green);}
+.filter-btn.expense-active{background:rgba(248,113,113,0.15);border-color:var(--red);color:var(--red);}
+.table-card{background:var(--card);border:1px solid var(--border);border-radius:16px;overflow:hidden;}
+table{width:100%;border-collapse:collapse;}
+th,td{padding:14px 16px;text-align:center;font-size:14px;}
+th{background:rgba(124,58,237,0.2);color:var(--purple);font-size:12px;text-transform:uppercase;letter-spacing:0.8px;font-weight:700;}
+tr:nth-child(even){background:rgba(255,255,255,0.02);}
+tr:hover{background:rgba(167,139,250,0.05);}
+.badge{display:inline-block;padding:3px 10px;border-radius:20px;font-size:12px;font-weight:700;}
+.badge-income{background:rgba(16,185,129,0.15);color:var(--green);border:1px solid rgba(16,185,129,0.3);}
+.badge-expense{background:rgba(248,113,113,0.15);color:var(--red);border:1px solid rgba(248,113,113,0.3);}
+.amount-income{color:var(--green);font-weight:700;}
+.amount-expense{color:var(--red);font-weight:700;}
+.empty{padding:60px;text-align:center;color:var(--muted);font-size:15px;}
+.del-btn{background:none;border:1px solid rgba(248,113,113,0.3);color:var(--red);padding:4px 10px;border-radius:6px;cursor:pointer;font-size:12px;font-family:'Space Grotesk',sans-serif;transition:0.2s;}
+.del-btn:hover{background:rgba(248,113,113,0.15);}
+.count-info{font-size:13px;color:var(--muted);margin-bottom:12px;}
 </style>
 </head>
-
 <body>
-
 <nav>
-<h2>💰 FinancePro</h2>
-<div>
-<a href="index.html">Home</a>
-<a href="dashboard.html">Dashboard</a>
-<a href="income.html">Income</a>
-<a href="expenses.html">Expenses</a>
-<a href="details.html">Details</a>
-</div>
+  <div class="nav-logo">💰 Finance<span>Pro</span></div>
+  <div class="nav-links">
+    <a href="index.html">Home</a>
+    <a href="dashboard.html">Dashboard</a>
+    <a href="income.html">Income</a>
+    <a href="expenses.html">Expenses</a>
+    <a href="details.html">Details</a>
+    <span id="navUser"></span>
+    <button class="btn-logout" onclick="logout()">Logout</button>
+  </div>
 </nav>
 
 <div class="container">
+  <div class="page-title">📋 Transaction History</div>
 
-<h1>📋 Transaction History</h1>
+  <div class="filter-bar">
+    <button class="filter-btn active" id="btnAll" onclick="setFilter('all')">All</button>
+    <button class="filter-btn" id="btnIncome" onclick="setFilter('income')">Income</button>
+    <button class="filter-btn" id="btnExpense" onclick="setFilter('expense')">Expenses</button>
+  </div>
+  <div class="count-info" id="countInfo"></div>
 
-<table id="transactionTable">
-<thead>
-<tr>
-<th>Type</th>
-<th>Category</th>
-<th>Amount (₹)</th>
-<th>Date</th>
-</tr>
-</thead>
-<tbody id="tableBody">
-<!-- Initially empty -->
-</tbody>
-</table>
-
-<p id="emptyMsg" class="empty-message"></p>
-
+  <div class="table-card" id="tableCard">
+    <div class="empty">Loading...</div>
+  </div>
 </div>
 
+<script src="api.js"></script>
 <script>
+requireAuth();
 
-// Get transactions from localStorage
-let transactions = JSON.parse(localStorage.getItem("transactions")) || [];
+let allTransactions = [];
+let currentFilter = 'all';
 
-// Reference table body
-let tableBody = document.getElementById("tableBody");
-let emptyMsg = document.getElementById("emptyMsg");
-
-// If no transactions → show nothing in table
-if(transactions.length === 0){
-    emptyMsg.innerText = "No transactions yet. Add income or expenses to see records.";
-}
-else{
-    transactions.forEach(t => {
-        let row = `
-            <tr>
-                <td>${t.type}</td>
-                <td>${t.category}</td>
-                <td>₹${t.amount}</td>
-                <td>${t.date}</td>
-            </tr>
-        `;
-        tableBody.innerHTML += row;
-    });
+function setFilter(f){
+  currentFilter = f;
+  document.getElementById('btnAll').className = 'filter-btn' + (f==='all'?' active':'');
+  document.getElementById('btnIncome').className = 'filter-btn' + (f==='income'?' income-active':'');
+  document.getElementById('btnExpense').className = 'filter-btn' + (f==='expense'?' expense-active':'');
+  renderTable();
 }
 
+async function loadTransactions(){
+  try{
+    const res = await apiFetch('/transactions');
+    if(!res) return;
+    const data = await res.json();
+    if(!res.ok){ console.error(data); return; }
+    allTransactions = data.data;
+    renderTable();
+  } catch(e){ console.error(e); }
+}
+
+function renderTable(){
+  const filtered = currentFilter === 'all' ? allTransactions : allTransactions.filter(t=>t.type===currentFilter);
+  document.getElementById('countInfo').textContent = `Showing ${filtered.length} of ${allTransactions.length} transaction${allTransactions.length!==1?'s':''}`;
+
+  if(filtered.length === 0){
+    document.getElementById('tableCard').innerHTML = '<div class="empty">No transactions found.</div>';
+    return;
+  }
+  const rows = filtered.map(t => `
+    <tr>
+      <td><span class="badge badge-${t.type}">${t.type}</span></td>
+      <td>${t.category}</td>
+      <td class="amount-${t.type}">₹ ${parseFloat(t.amount).toLocaleString('en-IN',{minimumFractionDigits:2})}</td>
+      <td>${t.txn_date?t.txn_date.substring(0,10):''}</td>
+      <td>${t.description||'—'}</td>
+      <td><button class="del-btn" onclick="deleteTxn(${t.txn_id})">Delete</button></td>
+    </tr>`).join('');
+  document.getElementById('tableCard').innerHTML = `
+    <table>
+      <thead><tr><th>Type</th><th>Category</th><th>Amount</th><th>Date</th><th>Description</th><th>Action</th></tr></thead>
+      <tbody>${rows}</tbody>
+    </table>`;
+}
+
+async function deleteTxn(id){
+  if(!confirm('Delete this transaction?')) return;
+  try{
+    const res = await apiFetch('/transactions/'+id,{method:'DELETE'});
+    if(res&&res.ok) await loadTransactions();
+  } catch(e){ console.error(e); }
+}
+
+loadTransactions();
 </script>
-
 </body>
 </html>

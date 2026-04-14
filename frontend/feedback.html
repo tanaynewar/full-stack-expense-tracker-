@@ -1,153 +1,88 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Feedback - Finance Tracker</title>
-
+<title>Feedback - FinancePro</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Syne:wght@700;800&display=swap" rel="stylesheet">
 <style>
-
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    font-family:'Segoe UI',sans-serif;
-}
-
-/* Background same theme as other pages */
-body{
-    background:linear-gradient(135deg,#0f0c29,#302b63,#24243e);
-    min-height:100vh;
-    display:flex;
-    flex-direction:column;
-}
-
-/* Navigation */
-nav{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    padding:20px 50px;
-    background:rgba(0,0,0,0.5);
-    border-bottom:1px solid rgba(167,139,250,0.2);
-    color:white;
-}
-
-nav a{
-    color:#c4b5fd;
-    text-decoration:none;
-    margin-left:20px;
-    font-weight:bold;
-    transition:0.3s;
-}
-
-nav a:hover{
-    color:#f59e0b;
-}
-
-/* Center Container */
-.container{
-    flex:1;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    padding:20px;
-}
-
-/* Glass Card */
-.card{
-    width:100%;
-    max-width:450px;
-    background:rgba(167,139,250,0.1);
-    backdrop-filter:blur(12px);
-    border:1px solid rgba(167,139,250,0.25);
-    padding:35px;
-    border-radius:20px;
-    box-shadow:0 8px 32px rgba(0,0,0,0.4);
-    color:white;
-    animation:fadeIn 1s ease-in;
-}
-
-/* Title */
-.card h2{
-    text-align:center;
-    margin-bottom:20px;
-    color:#c4b5fd;
-}
-
-/* Inputs */
-input, textarea{
-    width:100%;
-    padding:12px;
-    margin:12px 0;
-    border:1px solid rgba(167,139,250,0.3);
-    border-radius:10px;
-    outline:none;
-    font-size:14px;
-    background:rgba(255,255,255,0.08);
-    color:white;
-}
-
-/* Button */
-button{
-    width:100%;
-    padding:12px;
-    background:linear-gradient(135deg,#a78bfa,#7c3aed);
-    color:white;
-    font-weight:bold;
-    border:none;
-    border-radius:25px;
-    cursor:pointer;
-    transition:0.3s;
-    font-size:16px;
-}
-
-button:hover{
-    background:linear-gradient(135deg,#f59e0b,#d97706);
-    transform:scale(1.05);
-}
-
-/* Animation */
-@keyframes fadeIn{
-    from{opacity:0; transform:translateY(-20px);}
-    to{opacity:1; transform:translateY(0);}
-}
-
-/* Responsive */
-@media(max-width:500px){
-    nav{
-        flex-direction:column;
-    }
-}
-
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Space Grotesk',sans-serif;}
+:root{--bg:#0a0a0f;--card:rgba(255,255,255,0.04);--border:rgba(255,255,255,0.1);--purple:#a78bfa;--gold:#f59e0b;--green:#10b981;--red:#f87171;--text:#e2e8f0;--muted:#94a3b8;}
+body{background:var(--bg);color:var(--text);min-height:100vh;display:flex;flex-direction:column;background-image:radial-gradient(ellipse 80% 60% at 50% -20%,rgba(124,58,237,0.15) 0%,transparent 60%);}
+nav{display:flex;justify-content:space-between;align-items:center;padding:18px 60px;background:rgba(0,0,0,0.6);border-bottom:1px solid var(--border);backdrop-filter:blur(12px);}
+.nav-logo{font-family:'Syne',sans-serif;font-size:22px;font-weight:800;}
+.nav-logo span{color:var(--purple);}
+.nav-links{display:flex;align-items:center;gap:4px;}
+.nav-links a{color:var(--muted);text-decoration:none;padding:6px 10px;font-size:14px;font-weight:500;transition:0.2s;border-radius:8px;}
+.nav-links a:hover{color:var(--text);background:rgba(255,255,255,0.05);}
+#navUser{color:var(--purple);font-size:13px;padding:0 8px;}
+.btn-logout{background:none;border:1px solid var(--border);border-radius:8px;color:var(--muted);padding:6px 14px;cursor:pointer;font-size:13px;font-family:'Space Grotesk',sans-serif;transition:0.2s;}
+.btn-logout:hover{border-color:var(--red);color:var(--red);}
+.main{flex:1;display:flex;justify-content:center;align-items:center;padding:40px 20px;}
+.card{width:100%;max-width:440px;background:var(--card);border:1px solid var(--border);border-radius:20px;padding:36px;backdrop-filter:blur(20px);}
+.card h2{font-family:'Syne',sans-serif;font-size:22px;font-weight:800;margin-bottom:24px;text-align:center;letter-spacing:-0.5px;}
+.form-group{margin-bottom:16px;}
+label{display:block;font-size:12px;color:var(--muted);margin-bottom:6px;font-weight:600;text-transform:uppercase;letter-spacing:0.5px;}
+input,textarea{width:100%;padding:11px 14px;background:rgba(255,255,255,0.06);border:1px solid var(--border);border-radius:10px;color:var(--text);font-size:14px;font-family:'Space Grotesk',sans-serif;outline:none;transition:0.2s;}
+input:focus,textarea:focus{border-color:var(--purple);}
+textarea{resize:vertical;min-height:100px;}
+.btn{width:100%;padding:12px;background:linear-gradient(135deg,#7c3aed,#a78bfa);border:none;border-radius:10px;color:white;font-size:15px;font-weight:700;cursor:pointer;font-family:'Space Grotesk',sans-serif;transition:0.2s;margin-top:4px;}
+.btn:hover{opacity:0.9;transform:translateY(-1px);}
+.success-msg{background:rgba(16,185,129,0.15);color:var(--green);border:1px solid rgba(16,185,129,0.3);border-radius:10px;padding:14px;text-align:center;margin-top:14px;font-weight:600;display:none;}
 </style>
 </head>
-
 <body>
-
 <nav>
-<h2>💬 Feedback</h2>
-<div>
-<a href="index.html">Home</a>
-<a href="dashboard.html">Dashboard</a>
-<a href="transactions.html">Transactions</a>
-<a href="details.html">Details</a>
-</div>
+  <div class="nav-logo">💰 Finance<span>Pro</span></div>
+  <div class="nav-links">
+    <a href="index.html">Home</a>
+    <a href="dashboard.html">Dashboard</a>
+    <a href="transactions.html">Transactions</a>
+    <a href="details.html">Details</a>
+    <span id="navUser"></span>
+    <button class="btn-logout" onclick="logout()">Logout</button>
+  </div>
 </nav>
 
-<div class="container">
-<div class="card">
-
-<h2>We Value Your Feedback</h2>
-
-<form>
-<input type="text" placeholder="Full Name" required>
-<input type="email" placeholder="Email Address" required>
-<input type="tel" placeholder="Mobile Number" pattern="[0-9]{10}" required>
-<textarea rows="4" placeholder="Your Feedback..." required></textarea>
-<button type="submit">Submit Feedback</button>
-</form>
-
+<div class="main">
+  <div class="card">
+    <h2>💬 We Value Your Feedback</h2>
+    <div class="form-group">
+      <label>Full Name</label>
+      <input type="text" id="name" placeholder="Your name">
+    </div>
+    <div class="form-group">
+      <label>Email</label>
+      <input type="email" id="email" placeholder="you@example.com">
+    </div>
+    <div class="form-group">
+      <label>Mobile Number</label>
+      <input type="tel" id="mobile" placeholder="10-digit number">
+    </div>
+    <div class="form-group">
+      <label>Feedback</label>
+      <textarea id="feedback" placeholder="Share your thoughts..."></textarea>
+    </div>
+    <button class="btn" onclick="submitFeedback()">Submit Feedback</button>
+    <div class="success-msg" id="successMsg">✅ Thank you for your feedback!</div>
+  </div>
 </div>
-</div>
 
+<script src="api.js"></script>
+<script>
+requireAuth();
+
+function submitFeedback(){
+  const name = document.getElementById('name').value.trim();
+  const email = document.getElementById('email').value.trim();
+  const mobile = document.getElementById('mobile').value.trim();
+  const feedback = document.getElementById('feedback').value.trim();
+  if(!name||!email||!feedback){ alert('Please fill in Name, Email, and Feedback.'); return; }
+  // No feedback endpoint in backend — show confirmation only
+  document.getElementById('successMsg').style.display = 'block';
+  document.getElementById('name').value='';
+  document.getElementById('email').value='';
+  document.getElementById('mobile').value='';
+  document.getElementById('feedback').value='';
+}
+</script>
 </body>
 </html>

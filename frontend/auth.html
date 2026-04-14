@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>FinancePro - Login / Signup</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after {
+      margin: 0; padding: 0; box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Space Grotesk', sans-serif;
+      background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.07);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(167, 139, 250, 0.25);
+      border-radius: 20px;
+      padding: 40px;
+      width: 100%;
+      max-width: 460px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+    }
+
+    .logo {
+      text-align: center;
+      margin-bottom: 30px;
+      font-size: 26px;
+      font-weight: 700;
+      letter-spacing: 1px;
+    }
+
+    /* Tabs */
+    .tabs {
+      display: flex;
+      border-bottom: 1px solid rgba(167, 139, 250, 0.3);
+      margin-bottom: 28px;
+    }
+
+    .tab-btn {
+      flex: 1;
+      background: none;
+      border: none;
+      color: rgba(255,255,255,0.45);
+      font-family: inherit;
+      font-size: 15px;
+      font-weight: 600;
+      padding: 12px 0;
+      cursor: pointer;
+      transition: color 0.2s;
+      position: relative;
+    }
+
+    .tab-btn.active {
+      color: #fff;
+    }
+
+    .tab-btn.active::after {
+      content: '';
+      position: absolute;
+      bottom: -1px;
+      left: 0; right: 0;
+      height: 2px;
+      background: #a78bfa;
+      border-radius: 2px 2px 0 0;
+    }
+
+    /* Form */
+    .form-section { display: none; }
+    .form-section.active { display: block; }
+
+    label {
+      display: block;
+      font-size: 13px;
+      font-weight: 500;
+      color: #c4b5fd;
+      margin-bottom: 6px;
+      margin-top: 18px;
+    }
+
+    input {
+      width: 100%;
+      padding: 13px 16px;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(167,139,250,0.3);
+      border-radius: 10px;
+      color: #fff;
+      font-family: inherit;
+      font-size: 14px;
+      outline: none;
+      transition: border-color 0.2s, background 0.2s;
+    }
+
+    input:focus {
+      border-color: #a78bfa;
+      background: rgba(167,139,250,0.1);
+    }
+
+    input::placeholder { color: rgba(255,255,255,0.35); }
+
+    .submit-btn {
+      margin-top: 26px;
+      width: 100%;
+      padding: 14px;
+      background: linear-gradient(135deg, #a78bfa, #7c3aed);
+      border: none;
+      border-radius: 12px;
+      color: white;
+      font-family: inherit;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: opacity 0.2s, transform 0.15s;
+    }
+
+    .submit-btn:hover { opacity: 0.88; transform: translateY(-1px); }
+    .submit-btn:active { transform: translateY(0); }
+    .submit-btn:disabled { opacity: 0.55; cursor: not-allowed; }
+
+    /* Messages */
+    .msg {
+      margin-top: 16px;
+      padding: 12px 16px;
+      border-radius: 10px;
+      font-size: 13px;
+      display: none;
+    }
+    .msg.error { background: rgba(239,68,68,0.15); border: 1px solid rgba(239,68,68,0.4); color: #fca5a5; display: block; }
+    .msg.success { background: rgba(34,197,94,0.15); border: 1px solid rgba(34,197,94,0.4); color: #86efac; display: block; }
+  </style>
+</head>
+<body>
+
+<div class="card">
+  <div class="logo">💰 FinancePro</div>
+
+  <!-- Tabs -->
+  <div class="tabs">
+    <button class="tab-btn active" onclick="switchTab('login')">Login</button>
+    <button class="tab-btn" onclick="switchTab('signup')">Sign Up</button>
+  </div>
+
+  <!-- LOGIN FORM -->
+  <div id="loginSection" class="form-section active">
+    <label>Email</label>
+    <input type="email" id="loginEmail" placeholder="you@example.com" />
+
+    <label>Password</label>
+    <input type="password" id="loginPassword" placeholder="••••••••" />
+
+    <button class="submit-btn" id="loginBtn" onclick="handleLogin()">Login</button>
+    <div class="msg" id="loginMsg"></div>
+  </div>
+
+  <!-- SIGNUP FORM -->
+  <div id="signupSection" class="form-section">
+    <label>Username</label>
+    <input type="text" id="signupUsername" placeholder="Your name" />
+
+    <label>Email</label>
+    <input type="email" id="signupEmail" placeholder="you@example.com" />
+
+    <label>Password</label>
+    <input type="password" id="signupPassword" placeholder="Min 6 chars, include a number" />
+
+    <button class="submit-btn" id="signupBtn" onclick="handleSignup()">Create Account</button>
+    <div class="msg" id="signupMsg"></div>
+  </div>
+</div>
+
+<script>
+  // ✅ FIX: Point to backend port 5000 (not 5500 which is the frontend dev server)
+  const API_BASE = 'http://localhost:3000/api/auth';
+
+  function switchTab(tab) {
+    document.querySelectorAll('.tab-btn').forEach((b, i) => {
+      b.classList.toggle('active', (i === 0 && tab === 'login') || (i === 1 && tab === 'signup'));
+    });
+    document.getElementById('loginSection').classList.toggle('active', tab === 'login');
+    document.getElementById('signupSection').classList.toggle('active', tab === 'signup');
+    clearMessages();
+  }
+
+  function clearMessages() {
+    ['loginMsg', 'signupMsg'].forEach(id => {
+      const el = document.getElementById(id);
+      el.className = 'msg';
+      el.textContent = '';
+    });
+  }
+
+  function showMsg(id, text, type) {
+    const el = document.getElementById(id);
+    el.textContent = text;
+    el.className = 'msg ' + type;
+  }
+
+  async function handleLogin() {
+    const email = document.getElementById('loginEmail').value.trim();
+    const password = document.getElementById('loginPassword').value;
+    const btn = document.getElementById('loginBtn');
+
+    if (!email || !password) {
+      showMsg('loginMsg', 'Please fill in all fields.', 'error');
+      return;
+    }
+
+    btn.disabled = true;
+    btn.textContent = 'Logging in…';
+
+    try {
+      const res = await fetch(`${API_BASE}/login`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password })
+      });
+
+      const data = await res.json();
+
+      if (res.ok) {
+        localStorage.setItem('token', data.token);
+        localStorage.setItem('user', JSON.stringify(data.user));
+        showMsg('loginMsg', 'Login successful! Redirecting…', 'success');
+        setTimeout(() => { window.location.href = 'index.html'; }, 1200);
+      } else {
+        showMsg('loginMsg', data.message || 'Login failed.', 'error');
+      }
+    } catch (err) {
+      showMsg('loginMsg', 'Cannot connect to server. Is the backend running?', 'error');
+    } finally {
+      btn.disabled = false;
+      btn.textContent = 'Login';
+    }
+  }
+
+  async function handleSignup() {
+    const username = document.getElementById('signupUsername').value.trim();
+    const email = document.getElementById('signupEmail').value.trim();
+    const password = document.getElementById('signupPassword').value;
+    const btn = document.getElementById('signupBtn');
+
+    if (!username || !email || !password) {
+      showMsg('signupMsg', 'Please fill in all fields.', 'error');
+      return;
+    }
+
+    btn.disabled = true;
+    btn.textContent = 'Creating account…';
+
+    try {
+      const res = await fetch(`${API_BASE}/signup`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, email, password })
+      });
+
+      const data = await res.json();
+
+      if (res.ok) {
+        showMsg('signupMsg', 'Account created! You can now log in.', 'success');
+        setTimeout(() => switchTab('login'), 1500);
+      } else {
+        const errMsg = data.errors ? data.errors.map(e => e.msg).join(', ') : data.message;
+        showMsg('signupMsg', errMsg || 'Signup failed.', 'error');
+      }
+    } catch (err) {
+      showMsg('signupMsg', 'Cannot connect to server. Is the backend running?', 'error');
+    } finally {
+      btn.disabled = false;
+      btn.textContent = 'Create Account';
+    }
+  }
+</script>
+
+</body>
+</html>

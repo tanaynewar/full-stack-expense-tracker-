@@ -1,248 +1,243 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Expenses</title>
+<title>Expenses - FinancePro</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Syne:wght@700;800&display=swap" rel="stylesheet">
 <style>
-
-body{
-background:linear-gradient(135deg,#0f0c29,#302b63,#24243e);
-color:white;
-font-family:'Segoe UI';
-}
-
-nav{
-display:flex;
-justify-content:space-between;
-padding:20px 50px;
-background:rgba(0,0,0,0.5);
-border-bottom:1px solid rgba(167,139,250,0.2);
-}
-
-nav a{
-color:#c4b5fd;
-text-decoration:none;
-margin-left:20px;
-}
-
-.container{
-margin:40px;
-background:rgba(167,139,250,0.08);
-padding:30px;
-border-radius:15px;
-backdrop-filter:blur(10px);
-border:1px solid rgba(167,139,250,0.2);
-}
-
-input{
-width:100%;
-padding:10px;
-margin:10px 0;
-background:rgba(255,255,255,0.08);
-border:1px solid rgba(167,139,250,0.3);
-border-radius:8px;
-color:white;
-}
-
-button{
-width:100%;
-padding:10px;
-background:linear-gradient(135deg,#f87171,#ef4444);
-border:none;
-color:white;
-border-radius:10px;
-cursor:pointer;
-font-weight:bold;
-transition:0.3s;
-}
-
-button:hover{
-background:linear-gradient(135deg,#f59e0b,#d97706);
-}
-
-table{
-width:100%;
-margin-top:20px;
-border-collapse:collapse;
-}
-
-th,td{
-padding:10px;
-text-align:center;
-}
-
-th{
-background:linear-gradient(135deg,#7c3aed,#a78bfa);
-color:white;
-}
-
-.expense{
-color:#f87171;
-font-weight:bold;
-}
-
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Space Grotesk',sans-serif;}
+:root{--bg:#0a0a0f;--card:rgba(255,255,255,0.04);--border:rgba(255,255,255,0.1);--purple:#a78bfa;--gold:#f59e0b;--green:#10b981;--red:#f87171;--text:#e2e8f0;--muted:#94a3b8;}
+body{background:var(--bg);color:var(--text);min-height:100vh;background-image:radial-gradient(ellipse 60% 50% at 80% -10%,rgba(248,113,113,0.12) 0%,transparent 60%);}
+nav{display:flex;justify-content:space-between;align-items:center;padding:18px 60px;background:rgba(0,0,0,0.6);border-bottom:1px solid var(--border);backdrop-filter:blur(12px);}
+.nav-logo{font-family:'Syne',sans-serif;font-size:22px;font-weight:800;}
+.nav-logo span{color:var(--purple);}
+.nav-links{display:flex;align-items:center;gap:4px;}
+.nav-links a{color:var(--muted);text-decoration:none;padding:6px 10px;font-size:14px;font-weight:500;transition:0.2s;border-radius:8px;}
+.nav-links a:hover{color:var(--text);background:rgba(255,255,255,0.05);}
+#navUser{color:var(--purple);font-size:13px;padding:0 8px;}
+.btn-logout{background:none;border:1px solid var(--border);border-radius:8px;color:var(--muted);padding:6px 14px;cursor:pointer;font-size:13px;font-family:'Space Grotesk',sans-serif;transition:0.2s;}
+.btn-logout:hover{border-color:var(--red);color:var(--red);}
+.container{max-width:900px;margin:0 auto;padding:40px 30px;}
+.page-title{font-family:'Syne',sans-serif;font-size:28px;font-weight:800;margin-bottom:8px;letter-spacing:-1px;}
+.total-bar{background:rgba(248,113,113,0.1);border:1px solid rgba(248,113,113,0.25);border-radius:12px;padding:16px 24px;margin-bottom:28px;display:flex;align-items:center;justify-content:space-between;}
+.total-bar span{color:var(--red);font-family:'Syne',sans-serif;font-size:26px;font-weight:800;}
+.form-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:28px;margin-bottom:28px;}
+.form-card h3{font-size:16px;font-weight:700;margin-bottom:20px;color:var(--red);}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+.form-group{display:flex;flex-direction:column;gap:6px;}
+label{font-size:12px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:0.5px;}
+input,select{padding:11px 14px;background:rgba(255,255,255,0.06);border:1px solid var(--border);border-radius:10px;color:var(--text);font-size:14px;font-family:'Space Grotesk',sans-serif;transition:0.2s;outline:none;}
+input:focus,select:focus{border-color:var(--red);}
+select option{background:#1a1a2e;color:var(--text);}
+.limit-status{padding:10px 14px;border-radius:8px;font-size:13px;margin-top:4px;display:none;}
+.limit-status.ok{background:rgba(16,185,129,0.1);color:var(--green);border:1px solid rgba(16,185,129,0.3);}
+.limit-status.warn{background:rgba(245,158,11,0.1);color:var(--gold);border:1px solid rgba(245,158,11,0.3);}
+.limit-status.over{background:rgba(248,113,113,0.1);color:var(--red);border:1px solid rgba(248,113,113,0.3);}
+.limit-status.noset{background:rgba(167,139,250,0.1);color:var(--purple);border:1px solid rgba(167,139,250,0.3);}
+.btn-add{margin-top:18px;padding:12px 28px;background:linear-gradient(135deg,#dc2626,#f87171);border:none;border-radius:10px;color:white;font-size:14px;font-weight:700;cursor:pointer;font-family:'Space Grotesk',sans-serif;transition:0.2s;}
+.btn-add:hover{opacity:0.9;transform:translateY(-1px);}
+.btn-add:disabled{opacity:0.5;cursor:not-allowed;transform:none;}
+.msg{padding:10px 14px;border-radius:8px;font-size:13px;margin-top:12px;display:none;}
+.msg.error{background:rgba(248,113,113,0.15);color:var(--red);border:1px solid rgba(248,113,113,0.3);}
+.msg.success{background:rgba(16,185,129,0.15);color:var(--green);border:1px solid rgba(16,185,129,0.3);}
+.table-card{background:var(--card);border:1px solid var(--border);border-radius:16px;overflow:hidden;}
+.table-card h3{padding:20px 24px;font-size:16px;font-weight:700;border-bottom:1px solid var(--border);color:var(--red);}
+table{width:100%;border-collapse:collapse;}
+th,td{padding:13px 16px;text-align:center;font-size:14px;}
+th{background:rgba(248,113,113,0.15);color:var(--red);font-size:12px;text-transform:uppercase;letter-spacing:0.8px;font-weight:700;}
+tr:nth-child(even){background:rgba(255,255,255,0.02);}
+tr:hover{background:rgba(248,113,113,0.04);}
+.badge-expense{color:var(--red);font-weight:700;}
+.empty{padding:40px;text-align:center;color:var(--muted);}
+.del-btn{background:none;border:1px solid rgba(248,113,113,0.3);color:var(--red);padding:4px 10px;border-radius:6px;cursor:pointer;font-size:12px;font-family:'Space Grotesk',sans-serif;transition:0.2s;}
+.del-btn:hover{background:rgba(248,113,113,0.15);}
 </style>
 </head>
 <body>
-
 <nav>
-<h2>💸 Expenses</h2>
-<div>
-<a href="index.html">Home</a>
-<a href="dashboard.html">Dashboard</a>
-<a href="income.html">Income</a>
-</div>
+  <div class="nav-logo">💰 Finance<span>Pro</span></div>
+  <div class="nav-links">
+    <a href="index.html">Home</a>
+    <a href="dashboard.html">Dashboard</a>
+    <a href="income.html">Income</a>
+    <a href="transactions.html">Transactions</a>
+    <span id="navUser"></span>
+    <button class="btn-logout" onclick="logout()">Logout</button>
+  </div>
 </nav>
 
 <div class="container">
+  <div class="page-title">💸 Expenses</div>
 
-<h2>Total Expense: ₹ <span id="totalExpense">0</span></h2>
+  <div class="total-bar">
+    <span style="color:var(--muted);font-size:16px;font-family:'Space Grotesk'">Total Expenses</span>
+    <span id="totalExpense">₹0.00</span>
+  </div>
 
-<h3>Add Expense</h3>
-<input type="number" id="amount" placeholder="Amount">
-<select id="category" style="width:100%;padding:10px;margin:10px 0;border-radius:8px;border:1px solid rgba(167,139,250,0.3);font-family:'Segoe UI',sans-serif;font-size:14px;background:rgba(255,255,255,0.08);color:white;">
-<option value="">-- Select Category --</option>
-<option value="Groceries">Groceries</option>
-<option value="Vehicle Services">Vehicle Services</option>
-<option value="Home Rent">Home Rent</option>
-<option value="Entertainment">Entertainment</option>
-<option value="Other">Other</option>
-</select>
-<div id="limitStatus" style="margin:5px 0 10px;padding:10px;border-radius:8px;display:none;font-size:14px;"></div>
-<input type="date" id="date">
-<input type="text" id="description" placeholder="Description">
-<button onclick="addExpense()">Add Expense</button>
+  <div class="form-card">
+    <h3>➕ Add Expense</h3>
+    <div class="form-grid">
+      <div class="form-group">
+        <label>Amount (₹)</label>
+        <input type="number" id="amount" placeholder="0.00" min="0.01" step="0.01">
+      </div>
+      <div class="form-group">
+        <label>Category</label>
+        <select id="category" onchange="checkLimit()">
+          <option value="">-- Select Category --</option>
+          <option>Groceries</option>
+          <option>Vehicle Services</option>
+          <option>Home Rent</option>
+          <option>Entertainment</option>
+          <option>Other</option>
+        </select>
+        <div class="limit-status" id="limitStatus"></div>
+      </div>
+      <div class="form-group">
+        <label>Date</label>
+        <input type="date" id="txn_date">
+      </div>
+      <div class="form-group">
+        <label>Description (optional)</label>
+        <input type="text" id="description" placeholder="Short note...">
+      </div>
+    </div>
+    <button class="btn-add" id="addBtn" onclick="addExpense()">Add Expense</button>
+    <div class="msg" id="msg"></div>
+  </div>
 
-<table id="expenseTable">
-<tr>
-<th>Amount</th>
-<th>Category</th>
-<th>Date</th>
-<th>Description</th>
-</tr>
-</table>
-
+  <div class="table-card">
+    <h3>📋 Expense Transactions</h3>
+    <div id="tableWrap"><div class="empty">Loading...</div></div>
+  </div>
 </div>
 
+<script src="api.js"></script>
 <script>
+requireAuth();
 
-let transactions = JSON.parse(localStorage.getItem("transactions")) || [];
-let table = document.getElementById("expenseTable");
-
-// Limit key map matching dashboard
 const limitKeys = {
-    "Groceries": "limitGroceries",
-    "Vehicle Services": "limitVehicle",
-    "Home Rent": "limitRent",
-    "Entertainment": "limitEntertainment",
-    "Other": "limitOther"
+  "Groceries":"limitGroceries","Vehicle Services":"limitVehicle",
+  "Home Rent":"limitRent","Entertainment":"limitEntertainment","Other":"limitOther"
 };
 
-// Show limit status when category is selected
-document.getElementById("category").addEventListener("change", function(){
-    checkLimitStatus(this.value);
-});
+let expenseList = [];
 
-function checkLimitStatus(category){
-    let statusBox = document.getElementById("limitStatus");
-    if(!category){ statusBox.style.display = "none"; return; }
+function showMsg(text,type){
+  const el = document.getElementById('msg');
+  el.textContent = text; el.className = 'msg '+type; el.style.display='block';
+  setTimeout(()=>el.style.display='none',3500);
+}
 
-    let limitKey = limitKeys[category];
-    let limit = parseFloat(localStorage.getItem(limitKey)) || 0;
+function checkLimit(){
+  const cat = document.getElementById('category').value;
+  const statusEl = document.getElementById('limitStatus');
+  if(!cat){ statusEl.style.display='none'; return; }
 
-    // Calculate already spent in this category
-    let alreadySpent = 0;
-    transactions.forEach(t => {
-        if(t.type === "expense" && t.category === category){
-            alreadySpent += t.amount;
-        }
-    });
+  const key = limitKeys[cat];
+  const limit = key ? parseFloat(localStorage.getItem('fp_'+key))||0 : 0;
+  const spent = expenseList.filter(t=>t.category===cat).reduce((s,t)=>s+parseFloat(t.amount),0);
 
-    if(limit === 0){
-        statusBox.style.display = "block";
-        statusBox.style.background = "rgba(167,139,250,0.1)";
-        statusBox.style.color = "#c4b5fd";
-        statusBox.innerHTML = "ℹ️ No limit set for <b>" + category + "</b>. Spent so far: ₹" + alreadySpent;
+  statusEl.style.display = 'block';
+  if(limit <= 0){
+    statusEl.className = 'limit-status noset';
+    statusEl.textContent = 'ℹ️ No limit set for ' + cat + '. Spent so far: ₹' + spent.toFixed(2);
+  } else if(spent >= limit){
+    statusEl.className = 'limit-status over';
+    statusEl.textContent = '🚫 Limit exceeded! Limit: ₹'+limit+' | Spent: ₹'+spent.toFixed(2);
+  } else {
+    const remaining = limit - spent;
+    const pct = (spent/limit)*100;
+    if(pct >= 80){
+      statusEl.className = 'limit-status warn';
+      statusEl.textContent = '⚠️ Almost at limit! Remaining: ₹'+remaining.toFixed(2)+' of ₹'+limit;
     } else {
-        let remaining = limit - alreadySpent;
-        if(remaining <= 0){
-            statusBox.style.display = "block";
-            statusBox.style.background = "rgba(248,113,113,0.2)";
-            statusBox.style.color = "#f87171";
-            statusBox.innerHTML = "🚫 Limit exceeded for <b>" + category + "</b>! Limit: ₹" + limit + " | Spent: ₹" + alreadySpent;
-        } else {
-            statusBox.style.display = "block";
-            statusBox.style.background = "rgba(16,185,129,0.15)";
-            statusBox.style.color = "#10b981";
-            statusBox.innerHTML = "✅ <b>" + category + "</b> — Limit: ₹" + limit + " | Spent: ₹" + alreadySpent + " | Remaining: ₹" + remaining;
-        }
+      statusEl.className = 'limit-status ok';
+      statusEl.textContent = '✅ Limit: ₹'+limit+' | Spent: ₹'+spent.toFixed(2)+' | Remaining: ₹'+remaining.toFixed(2);
     }
+  }
 }
 
-function addExpense(){
-let amount = parseFloat(document.getElementById("amount").value);
-let category = document.getElementById("category").value;
-let date = document.getElementById("date").value;
-let description = document.getElementById("description").value;
+async function loadExpenses(){
+  try{
+    const res = await apiFetch('/transactions');
+    if(!res) return;
+    const data = await res.json();
+    if(!res.ok){ console.error(data); return; }
+    expenseList = data.data.filter(t => t.type === 'expense');
+    renderTable();
+  } catch(e){ console.error(e); }
+}
 
-if(!amount || !category || !date){
-    alert("Please fill in Amount, Category, and Date.");
+function renderTable(){
+  const total = expenseList.reduce((s,t)=>s+parseFloat(t.amount),0);
+  document.getElementById('totalExpense').textContent = '₹'+total.toLocaleString('en-IN',{minimumFractionDigits:2,maximumFractionDigits:2});
+
+  if(expenseList.length === 0){
+    document.getElementById('tableWrap').innerHTML = '<div class="empty">No expense records yet. Add your first expense above.</div>';
     return;
+  }
+  const rows = expenseList.map(t => `
+    <tr>
+      <td class="badge-expense">₹ ${parseFloat(t.amount).toLocaleString('en-IN',{minimumFractionDigits:2})}</td>
+      <td>${t.category}</td>
+      <td>${t.txn_date?t.txn_date.substring(0,10):''}</td>
+      <td>${t.description||'—'}</td>
+      <td><button class="del-btn" onclick="deleteExpense(${t.txn_id})">Delete</button></td>
+    </tr>`).join('');
+  document.getElementById('tableWrap').innerHTML = `
+    <table><thead><tr><th>Amount</th><th>Category</th><th>Date</th><th>Description</th><th>Action</th></tr></thead><tbody>${rows}</tbody></table>`;
 }
 
-// Check limit before adding
-let limitKey = limitKeys[category];
-let limit = parseFloat(localStorage.getItem(limitKey)) || 0;
-if(limit > 0){
-    let alreadySpent = 0;
-    transactions.forEach(t => {
-        if(t.type === "expense" && t.category === category){
-            alreadySpent += t.amount;
-        }
-    });
-    if(alreadySpent + amount > limit){
-        let over = (alreadySpent + amount) - limit;
-        let proceed = confirm(
-            "⚠️ Warning: Adding ₹" + amount + " to " + category +
-            " will exceed your limit by ₹" + over + "!\n" +
-            "Limit: ₹" + limit + " | Already Spent: ₹" + alreadySpent + "\n\n" +
-            "Do you want to proceed anyway?"
-        );
-        if(!proceed) return;
+async function addExpense(){
+  const amount = document.getElementById('amount').value;
+  const category = document.getElementById('category').value;
+  const txn_date = document.getElementById('txn_date').value;
+  const description = document.getElementById('description').value.trim();
+
+  if(!amount||!category||!txn_date){ showMsg('Please fill in Amount, Category, and Date.','error'); return; }
+
+  // Check limit warning
+  const key = limitKeys[category];
+  const limit = key ? parseFloat(localStorage.getItem('fp_'+key))||0 : 0;
+  if(limit > 0){
+    const spent = expenseList.filter(t=>t.category===category).reduce((s,t)=>s+parseFloat(t.amount),0);
+    if(spent + parseFloat(amount) > limit){
+      const over = (spent + parseFloat(amount) - limit).toFixed(2);
+      if(!confirm(`⚠️ Adding ₹${amount} will exceed your ${category} limit by ₹${over}.\n\nLimit: ₹${limit} | Already Spent: ₹${spent.toFixed(2)}\n\nProceed anyway?`)) return;
     }
+  }
+
+  const btn = document.getElementById('addBtn');
+  btn.disabled=true; btn.textContent='Adding...';
+  try{
+    const res = await apiFetch('/transactions',{
+      method:'POST',
+      body:JSON.stringify({type:'expense',category,amount:parseFloat(amount),txn_date,description:description||undefined})
+    });
+    const data = await res.json();
+    if(!res.ok){ showMsg(data.message||(data.errors?data.errors[0].msg:'Error'),'error'); }
+    else{
+      showMsg('Expense added!','success');
+      document.getElementById('amount').value='';
+      document.getElementById('category').value='';
+      document.getElementById('description').value='';
+      document.getElementById('limitStatus').style.display='none';
+      await loadExpenses();
+    }
+  } catch(e){ showMsg('Cannot connect to server.','error'); }
+  finally{ btn.disabled=false; btn.textContent='Add Expense'; }
 }
 
-let transaction = {
-amount,
-type:"expense",
-category,
-date,
-description
-};
-
-transactions.push(transaction);
-localStorage.setItem("transactions", JSON.stringify(transactions));
-location.reload();
+async function deleteExpense(id){
+  if(!confirm('Delete this expense?')) return;
+  try{
+    const res = await apiFetch('/transactions/'+id,{method:'DELETE'});
+    if(res&&res.ok) await loadExpenses();
+  } catch(e){ console.error(e); }
 }
 
-let totalExpense = 0;
-
-transactions.forEach(t=>{
-if(t.type==="expense"){
-totalExpense += t.amount;
-
-let row = table.insertRow();
-row.innerHTML = `
-<td class="expense">₹ ${t.amount}</td>
-<td>${t.category}</td>
-<td>${t.date}</td>
-<td>${t.description}</td>
-`;
-}
-});
-
-document.getElementById("totalExpense").innerText = totalExpense;
-
+document.getElementById('txn_date').valueAsDate = new Date();
+loadExpenses();
 </script>
-
 </body>
 </html>

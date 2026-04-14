@@ -1,172 +1,211 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Income</title>
+<title>Income - FinancePro</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Syne:wght@700;800&display=swap" rel="stylesheet">
 <style>
-
-body{
-background:linear-gradient(135deg,#0f0c29,#302b63,#24243e);
-color:white;
-font-family:'Segoe UI';
-}
-
-nav{
-display:flex;
-justify-content:space-between;
-padding:20px 50px;
-background:rgba(0,0,0,0.5);
-border-bottom:1px solid rgba(167,139,250,0.2);
-}
-
-nav a{
-color:#c4b5fd;
-text-decoration:none;
-margin-left:20px;
-}
-
-.container{
-margin:40px;
-background:rgba(167,139,250,0.08);
-padding:30px;
-border-radius:15px;
-backdrop-filter:blur(10px);
-border:1px solid rgba(167,139,250,0.2);
-}
-
-input{
-width:100%;
-padding:10px;
-margin:10px 0;
-background:rgba(255,255,255,0.08);
-border:1px solid rgba(167,139,250,0.3);
-border-radius:8px;
-color:white;
-}
-
-button{
-width:100%;
-padding:10px;
-background:linear-gradient(135deg,#10b981,#059669);
-border:none;
-color:white;
-border-radius:10px;
-cursor:pointer;
-font-weight:bold;
-transition:0.3s;
-}
-
-button:hover{
-background:linear-gradient(135deg,#f59e0b,#d97706);
-}
-
-table{
-width:100%;
-margin-top:20px;
-border-collapse:collapse;
-}
-
-th,td{
-padding:10px;
-text-align:center;
-}
-
-th{
-background:linear-gradient(135deg,#059669,#10b981);
-color:white;
-}
-
-.income{
-color:#10b981;
-font-weight:bold;
-}
-
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Space Grotesk',sans-serif;}
+:root{--bg:#0a0a0f;--card:rgba(255,255,255,0.04);--border:rgba(255,255,255,0.1);--purple:#a78bfa;--gold:#f59e0b;--green:#10b981;--red:#f87171;--text:#e2e8f0;--muted:#94a3b8;}
+body{background:var(--bg);color:var(--text);min-height:100vh;background-image:radial-gradient(ellipse 60% 50% at 20% -10%,rgba(16,185,129,0.15) 0%,transparent 60%);}
+nav{display:flex;justify-content:space-between;align-items:center;padding:18px 60px;background:rgba(0,0,0,0.6);border-bottom:1px solid var(--border);backdrop-filter:blur(12px);}
+.nav-logo{font-family:'Syne',sans-serif;font-size:22px;font-weight:800;}
+.nav-logo span{color:var(--purple);}
+.nav-links{display:flex;align-items:center;gap:4px;}
+.nav-links a{color:var(--muted);text-decoration:none;padding:6px 10px;font-size:14px;font-weight:500;transition:0.2s;border-radius:8px;}
+.nav-links a:hover{color:var(--text);background:rgba(255,255,255,0.05);}
+#navUser{color:var(--purple);font-size:13px;padding:0 8px;}
+.btn-logout{background:none;border:1px solid var(--border);border-radius:8px;color:var(--muted);padding:6px 14px;cursor:pointer;font-size:13px;font-family:'Space Grotesk',sans-serif;transition:0.2s;}
+.btn-logout:hover{border-color:var(--red);color:var(--red);}
+.container{max-width:900px;margin:0 auto;padding:40px 30px;}
+.page-title{font-family:'Syne',sans-serif;font-size:28px;font-weight:800;margin-bottom:8px;letter-spacing:-1px;}
+.total-bar{background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.25);border-radius:12px;padding:16px 24px;margin-bottom:28px;display:flex;align-items:center;justify-content:space-between;}
+.total-bar span{color:var(--green);font-family:'Syne',sans-serif;font-size:26px;font-weight:800;}
+.form-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:28px;margin-bottom:28px;}
+.form-card h3{font-size:16px;font-weight:700;margin-bottom:20px;color:var(--purple);}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+.form-group{display:flex;flex-direction:column;gap:6px;}
+.form-group.full{grid-column:1/-1;}
+label{font-size:12px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:0.5px;}
+input,select{padding:11px 14px;background:rgba(255,255,255,0.06);border:1px solid var(--border);border-radius:10px;color:var(--text);font-size:14px;font-family:'Space Grotesk',sans-serif;transition:0.2s;outline:none;}
+input:focus,select:focus{border-color:var(--green);}
+select option{background:#1a1a2e;color:var(--text);}
+.btn-add{margin-top:18px;padding:12px 28px;background:linear-gradient(135deg,#059669,#10b981);border:none;border-radius:10px;color:white;font-size:14px;font-weight:700;cursor:pointer;font-family:'Space Grotesk',sans-serif;transition:0.2s;}
+.btn-add:hover{opacity:0.9;transform:translateY(-1px);}
+.btn-add:disabled{opacity:0.5;cursor:not-allowed;transform:none;}
+.msg{padding:10px 14px;border-radius:8px;font-size:13px;margin-top:12px;display:none;}
+.msg.error{background:rgba(248,113,113,0.15);color:var(--red);border:1px solid rgba(248,113,113,0.3);}
+.msg.success{background:rgba(16,185,129,0.15);color:var(--green);border:1px solid rgba(16,185,129,0.3);}
+.table-card{background:var(--card);border:1px solid var(--border);border-radius:16px;overflow:hidden;}
+.table-card h3{padding:20px 24px;font-size:16px;font-weight:700;border-bottom:1px solid var(--border);color:var(--purple);}
+table{width:100%;border-collapse:collapse;}
+th,td{padding:13px 16px;text-align:center;font-size:14px;}
+th{background:rgba(16,185,129,0.15);color:var(--green);font-size:12px;text-transform:uppercase;letter-spacing:0.8px;font-weight:700;}
+tr:nth-child(even){background:rgba(255,255,255,0.02);}
+tr:hover{background:rgba(16,185,129,0.05);}
+.badge-income{color:var(--green);font-weight:700;}
+.empty{padding:40px;text-align:center;color:var(--muted);}
+.del-btn{background:none;border:1px solid rgba(248,113,113,0.3);color:var(--red);padding:4px 10px;border-radius:6px;cursor:pointer;font-size:12px;font-family:'Space Grotesk',sans-serif;transition:0.2s;}
+.del-btn:hover{background:rgba(248,113,113,0.15);}
 </style>
 </head>
 <body>
-
 <nav>
-<h2>💰 Income</h2>
-<div>
-<a href="index.html">Home</a>
-<a href="dashboard.html">Dashboard</a>
-<a href="expenses.html">Expenses</a>
-</div>
+  <div class="nav-logo">💰 Finance<span>Pro</span></div>
+  <div class="nav-links">
+    <a href="index.html">Home</a>
+    <a href="dashboard.html">Dashboard</a>
+    <a href="expenses.html">Expenses</a>
+    <a href="transactions.html">Transactions</a>
+    <span id="navUser"></span>
+    <button class="btn-logout" onclick="logout()">Logout</button>
+  </div>
 </nav>
 
 <div class="container">
+  <div class="page-title">💰 Income</div>
 
-<h2>Total Income: ₹ <span id="totalIncome">0</span></h2>
+  <div class="total-bar">
+    <span style="color:var(--muted);font-size:16px;font-family:'Space Grotesk'">Total Income</span>
+    <span id="totalIncome">₹0.00</span>
+  </div>
 
-<h3>Add Income</h3>
-<input type="number" id="amount" placeholder="Amount">
-<select id="category" style="width:100%;padding:10px;margin:10px 0;border-radius:8px;border:1px solid rgba(167,139,250,0.3);font-family:'Segoe UI',sans-serif;font-size:14px;background:rgba(255,255,255,0.08);color:white;">   
-<option value="">-- Select Category --</option>
-<option value="Salary">Salary</option>
-<option value="Scholarship">Scholarship</option>
-<option value="Freelance">Freelance</option>
-<option value="Business">Business</option>
-<option value="Investment">Investment</option>
-<option value="Gift">Gift</option>
-<option value="Other">Other</option>
-</select>
-<input type="date" id="date">
-<input type="text" id="description" placeholder="Description">
-<button onclick="addIncome()">Add Income</button>
+  <div class="form-card">
+    <h3>➕ Add Income</h3>
+    <div class="form-grid">
+      <div class="form-group">
+        <label>Amount (₹)</label>
+        <input type="number" id="amount" placeholder="0.00" min="0.01" step="0.01">
+      </div>
+      <div class="form-group">
+        <label>Category</label>
+        <select id="category">
+          <option value="">-- Select Category --</option>
+          <option>Salary</option>
+          <option>Scholarship</option>
+          <option>Freelance</option>
+          <option>Business</option>
+          <option>Investment</option>
+          <option>Gift</option>
+          <option>Other</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Date</label>
+        <input type="date" id="txn_date">
+      </div>
+      <div class="form-group">
+        <label>Description (optional)</label>
+        <input type="text" id="description" placeholder="Short note...">
+      </div>
+    </div>
+    <button class="btn-add" id="addBtn" onclick="addIncome()">Add Income</button>
+    <div class="msg" id="msg"></div>
+  </div>
 
-<table id="incomeTable">
-<tr>
-<th>Amount</th>
-<th>Category</th>
-<th>Date</th>
-<th>Description</th>
-</tr>
-</table>
-
+  <div class="table-card">
+    <h3>📋 Income Transactions</h3>
+    <div id="tableWrap">
+      <div class="empty">Loading...</div>
+    </div>
+  </div>
 </div>
 
+<script src="api.js"></script>
 <script>
+requireAuth();
 
-let transactions = JSON.parse(localStorage.getItem("transactions")) || [];
-let table = document.getElementById("incomeTable");
+let incomeList = [];
 
-function addIncome(){
-let amount = parseFloat(document.getElementById("amount").value);
-let category = document.getElementById("category").value;
-let date = document.getElementById("date").value;
-let description = document.getElementById("description").value;
-
-let transaction = {
-amount,
-type:"income",
-category,
-date,
-description
-};
-
-transactions.push(transaction);
-localStorage.setItem("transactions", JSON.stringify(transactions));
-location.reload();
+function showMsg(text, type){
+  const el = document.getElementById('msg');
+  el.textContent = text;
+  el.className = 'msg ' + type;
+  el.style.display = 'block';
+  setTimeout(() => el.style.display='none', 3500);
 }
 
-let totalIncome = 0;
-
-transactions.forEach(t=>{
-if(t.type==="income"){
-totalIncome += t.amount;
-
-let row = table.insertRow();
-row.innerHTML = `
-<td class="income">₹ ${t.amount}</td>
-<td>${t.category}</td>
-<td>${t.date}</td>
-<td>${t.description}</td>
-`;
+async function loadIncome(){
+  try{
+    const res = await apiFetch('/transactions');
+    if(!res) return;
+    const data = await res.json();
+    if(!res.ok){ console.error(data); return; }
+    incomeList = data.data.filter(t => t.type === 'income');
+    renderTable();
+  } catch(e){ console.error(e); }
 }
-});
 
-document.getElementById("totalIncome").innerText = totalIncome;
+function renderTable(){
+  const total = incomeList.reduce((s,t) => s + parseFloat(t.amount), 0);
+  document.getElementById('totalIncome').textContent = '₹' + total.toLocaleString('en-IN',{minimumFractionDigits:2,maximumFractionDigits:2});
 
+  if(incomeList.length === 0){
+    document.getElementById('tableWrap').innerHTML = '<div class="empty">No income records yet. Add your first income above.</div>';
+    return;
+  }
+  let rows = incomeList.map(t => `
+    <tr>
+      <td class="badge-income">₹ ${parseFloat(t.amount).toLocaleString('en-IN',{minimumFractionDigits:2})}</td>
+      <td>${t.category}</td>
+      <td>${t.txn_date ? t.txn_date.substring(0,10) : ''}</td>
+      <td>${t.description || '—'}</td>
+      <td><button class="del-btn" onclick="deleteIncome(${t.txn_id})">Delete</button></td>
+    </tr>
+  `).join('');
+  document.getElementById('tableWrap').innerHTML = `
+    <table>
+      <thead><tr><th>Amount</th><th>Category</th><th>Date</th><th>Description</th><th>Action</th></tr></thead>
+      <tbody>${rows}</tbody>
+    </table>`;
+}
+
+async function addIncome(){
+  const amount = document.getElementById('amount').value;
+  const category = document.getElementById('category').value;
+  const txn_date = document.getElementById('txn_date').value;
+  const description = document.getElementById('description').value.trim();
+
+  if(!amount || !category || !txn_date){
+    showMsg('Please fill in Amount, Category, and Date.', 'error');
+    return;
+  }
+
+  const btn = document.getElementById('addBtn');
+  btn.disabled = true; btn.textContent = 'Adding...';
+
+  try{
+    const res = await apiFetch('/transactions', {
+      method:'POST',
+      body: JSON.stringify({type:'income', category, amount: parseFloat(amount), txn_date, description: description||undefined})
+    });
+    const data = await res.json();
+    if(!res.ok){
+      showMsg(data.message || (data.errors?data.errors[0].msg:'Error adding income'), 'error');
+    } else {
+      showMsg('Income added successfully!', 'success');
+      document.getElementById('amount').value = '';
+      document.getElementById('category').value = '';
+      document.getElementById('description').value = '';
+      await loadIncome();
+    }
+  } catch(e){
+    showMsg('Cannot connect to server.', 'error');
+  } finally{
+    btn.disabled = false; btn.textContent = 'Add Income';
+  }
+}
+
+async function deleteIncome(id){
+  if(!confirm('Delete this income record?')) return;
+  try{
+    const res = await apiFetch('/transactions/'+id, {method:'DELETE'});
+    if(res && res.ok) await loadIncome();
+  } catch(e){ console.error(e); }
+}
+
+// Set today as default date
+document.getElementById('txn_date').valueAsDate = new Date();
+loadIncome();
 </script>
-
 </body>
 </html>
